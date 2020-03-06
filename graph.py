@@ -1,36 +1,22 @@
 import matplotlib.pyplot as plt
 
+colors = ['#FF00FF', '#800080', '#FF0000', '#800000', '#FFFF00', '#808000', '#00FF00', '#008000', '#00FFFF', '#008080', '#0000FF', '#000080']
+#ax = plt.subplot()
 file = open('results.txt', 'r')
-array0, array1, array2, array3, array4, array5 = [], [], [], [], [], []
 o = 0
 for i in file:
-    if o == 0:
-        array0.append(float(i))
-        o += 1
-    elif o == 1:
-        array1.append(float(i))
-        o += 1
-    elif o == 2:
-        array2.append(float(i))
-        o += 1
-    elif o == 3:
-        array3.append(float(i))
-        o += 1
-    elif o == 4:
-        array4.append(float(i))
-        o += 1
-    elif o == 5:
-        array5.append(float(i))
-        o = 0
-
-
-ax = plt.subplot()
-ax.set_facecolor('#DCDCDC')
-ax.plot(array0, linestyle='-', color='#0000FF')  # bubble
-ax.plot(array1, linestyle='-', color='#0000BB')  # countion
-ax.plot(array2, linestyle='-', color='#FFFF00')  # include
-ax.plot(array3, linestyle='-', color='#00FF00')  # eject
-ax.plot(array4, linestyle='-', color='#00FFFF')  # shell
-ax.plot(array5, linestyle='-', color='#FF00FF')  # tree
-
+    array = []
+    for p in i.split(' '):
+        try:
+            array.append(float(p))
+        except:
+            pass
+    plt.plot(array, linestyle='-', color=colors[o])
+    o += 1
+#ax.set_facecolor('#DCDCDC')
+plt.title('Comparison of sorts')
+plt.xlabel('Elements')
+plt.ylabel('Time')
+plt.legend(('Bubble', 'Countion', 'Simple include', 'Simple eject', 'Shell sort', 'Tree sort', 'Quick sort', 'Merge sort', 'Bitwise'))
+plt.grid()
 plt.show()

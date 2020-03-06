@@ -1,3 +1,7 @@
+from random import randint
+from functools import reduce
+
+
 def sort_countion(array):
     another_array = array.copy()
     for i in range(len(array)):
@@ -77,37 +81,57 @@ def sort_bubble(array):
     return array
 
 
-def sort_quick_sort(array):
-    pass
+def sort_quick(array):
+    if len(array) <= 1:
+        return array
+    else:
+        q = array[randint(0, len(array) - 1)]
+    l_nums = [n for n in array if n < q]
+    e_nums = [q] * array.count(q)
+    b_nums = [n for n in array if n > q]
+    return sort_quick(l_nums) + e_nums + sort_quick(b_nums)
 
 
 def sort_merge(array):
-    mid = len(array) // 2
-    left_list = sort_merge(array[:mid])
-    right_list = sort_merge(array[mid:])
-    return merge(left_list, right_list)
+    length = len(array)
+    if length >= 2:
+        mid = int(length / 2)
+        array = merge(sort_merge(array[:mid]), sort_merge(array[mid:]))
+    return array
 
 
-def merge(left_list, right_list):
-    sorted_list = []
-    left_list_index = right_list_index = 0
-    left_list_length, right_list_length = len(left_list), len(right_list)
-    for _ in range(left_list_length + right_list_length):
-        if left_list_index < left_list_length and right_list_index < right_list_length:
-            if left_list[left_list_index] <= right_list[right_list_index]:
-                sorted_list.append(left_list[left_list_index])
-                left_list_index += 1
-            else:
-                sorted_list.append(right_list[right_list_index])
-                right_list_index += 1
-        elif left_list_index == left_list_length:
-            sorted_list.append(right_list[right_list_index])
-            right_list_index += 1
-        elif right_list_index == right_list_length:
-            sorted_list.append(left_list[left_list_index])
-            left_list_index += 1
-    return sorted_list
+def merge(left, right):
+    array = []
+    while left and right:
+        if left[0] < right[0]:
+            array.append(left.pop(0))
+        else:
+            array.append(right.pop(0))
+    if left:
+        array.extend(left)
+    if right:
+        array.extend(right)
+    return array
 
 
-def sort_distribution(array):
-    pass
+def sort_bitwise(array):
+    shift = 1
+    for x in range(len_number(max(array))):
+        result = [[] for _ in range(10)]
+        numbers = [x for x in range(10)]
+        for e, num in enumerate(numbers):
+            for arr in array:
+                if num == arr % (shift * 10) // shift:
+                    result[e].append(arr)
+        array = reduce(lambda x, y: x + y, result)
+        shift = shift * 10
+
+    return array
+
+
+def len_number(num):
+    c = 0
+    while num:
+        num //= 10
+        c += 1
+    return c

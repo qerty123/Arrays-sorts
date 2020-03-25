@@ -1,27 +1,59 @@
 from methods import *
 from time import time
-from random import randint
+from string import ascii_letters
+from random import randint, choice
 from progressbar import progressbar
 
 iterations = 10
-total = 5000
-objects = False
+total = 2000
+interval = 100
+object_type = 'digits'  # digits, objects or strings
 logs = False
 
-results_bubble = []
+results_bubble = [0]
 results_countion = [0]
-results_sinclude = []
+results_sinclude = [0]
 results_seject = [0]
-results_shell = []
-results_tree = []
-results_quicksort = []
-results_merge = []
-results_bitwise = []
+results_shell = [0]
+results_tree = [0]
+results_quicksort = [0]
+results_merge = [0]
+results_bitwise = [0]
 
 
 class Objects:
     def __init__(self, data):
         self.data = data
+        self.text0 = 'texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext'
+        self.text1 = 'texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext'
+        self.text2 = 'texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext'
+        self.text3 = 'texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext'
+        self.text4 = 'texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext'
+        self.text5 = 'texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext'
+
+    def __eq__(self, other):
+        return self.data == other
+
+    def __ne__(self, other):
+        return self.data != other
+
+    def __lt__(self, other):
+        return self.data < other
+
+    def __gt__(self, other):
+        return self.data > other
+
+    def __le__(self, other):
+        return self.data <= other
+
+    def __ge__(self, other):
+        return self.data >= other
+
+    def __floordiv__(self, other):
+        return self.data // other
+
+    def __mod__(self, other):
+        return self.data % other
 
 
 def make_sorts(array):
@@ -34,16 +66,16 @@ def make_sorts(array):
         print('Time: ' + "%s seconds" % ((time() - st) / iterations).__round__(4))
     results_bubble.append((time() - st) / iterations)
 
-    """
+
     # Countion sort
     st = time()
-    for i in range(iterations - 1):
+    """for i in range(iterations - 1):
         sort_countion(array)
     if logs:
         print('Countion sort: ' + str(sort_countion(array)))
-        print('Time: ' + "%s seconds" % ((time() - st) / iterations).__round__(4))
+        print('Time: ' + "%s seconds" % ((time() - st) / iterations).__round__(4))"""
     results_countion.append((time() - st) / iterations)
-    """
+
 
     # Simple include sort
     st = time()
@@ -54,16 +86,16 @@ def make_sorts(array):
         print('Time: ' + "%s seconds" % ((time() - st) / iterations).__round__(4))
     results_sinclude.append((time() - st) / iterations)
 
-    """
+
     # Simple eject sort
     st = time()
-    for i in range(iterations - 1):
+    """for i in range(iterations - 1):
         sort_eject(array)
     if logs:
         print('Simple eject sort: ' + str(sort_eject(array)))
-        print('Time: ' + "%s seconds" % ((time() - st) / iterations).__round__(4))
+        print('Time: ' + "%s seconds" % ((time() - st) / iterations).__round__(4))"""
     results_seject.append((time() - st) / iterations)
-    """
+
 
     # Shell sort
     st = time()
@@ -118,26 +150,28 @@ def make_str(array):
 
 
 tt = time()
+bar = progressbar.ProgressBar(maxval=total).start()
 if not logs:
-    bar = progressbar.ProgressBar(maxval=total).start()
     print('Sort in progress: ')
-for p in range(100, total, 100):
+for p in range(interval, total, interval):
     if logs:
         print('========== New iteration (' + str(p) + ') ==========')
-    else:
-        bar.update(p)
+    bar.update(p)
     array = []
-    if objects:
+    if object_type == 'objects':
         for o in range(0, p):
-            array.append(Objects(randint(-10000, 10000)))
+            array.append(Objects(randint(0, 100)))
+    elif object_type == 'string':
+        for o in range(0, p):
+            array.append(''.join(choice(ascii_letters) for _ in range(10)))
     else:
         for o in range(0, p):
-            array.append(randint(-10000, 10000))
+            array.append(randint(0, 100))
     make_sorts(array)
 bar.finish()
 print('Total time: ' + str((time() - tt).__round__(4)))
 
-file = open('results.txt', 'w')
+file = open('results_' + str(total) + '_' + object_type + '.txt', 'w')
 file.write(make_str(results_bubble))
 file.write(make_str(results_countion))
 file.write(make_str(results_sinclude))

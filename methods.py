@@ -125,7 +125,6 @@ def sort_bitwise(array):
                     result[e].append(arr)
         array = reduce(lambda x, y: x + y, result)
         shift = shift * 10
-
     return array
 
 
